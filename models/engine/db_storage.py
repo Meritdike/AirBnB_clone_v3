@@ -38,7 +38,6 @@ class DBStorage:
                                              HBNB_MYSQL_HOST,
                                              HBNB_MYSQL_DB))
         if HBNB_ENV == "test":
-            print('TEST')
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -60,10 +59,6 @@ class DBStorage:
         """commit all changes of the current database session"""
         self.__session.commit()
 
-    def rollback(self):
-        """commit all changes of the current database session"""
-        self.__session.rollback()
-
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         if obj is not None:
@@ -79,16 +74,3 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
-
-    def get(self, cls, id):
-        """retrieves an object"""
-        if cls is not None and id is not None and\
-           type(id) is str and cls in classes.values():
-            result = self.__session.query(cls).filter(cls.id == id).first()
-            return result
-        else:
-            return None
-
-    def count(self, cls=None):
-        """Count number of objects in storage"""
-        return len(self.all(cls))
